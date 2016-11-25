@@ -9,13 +9,13 @@ Folder Compare CLI is intended to compare files across two different folders tha
 ## How To Use
 
 - Place fccli.exe at any location
-- (Optionally) Append the path of the location of fccli.exe to your environment variable PATH, so that you can execute fccli from everywhere.
+- *(Optionally)* Append the path of the location of fccli.exe to your environment variable PATH, so that you can execute fccli from everywhere.
 - To compare the current folder with another folder, use :
   - `fccli "<destination folder>"`
 - To compare two folders using absolute paths, use :
   - `fccli "<source folder>" "<destination folder>"`
 
-> **NOTE : **When specified folder path, make sure to enclose them within " " to avoid the problems caused by spaces in the path.
+> **NOTE :** When specified folder path, make sure to enclose them within " " to avoid the problems caused by spaces in the path.
 
 ## Author
 
