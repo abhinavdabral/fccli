@@ -183,9 +183,9 @@ namespace fccli
                     mismatchCount++;
                     Console.Write(filename);
 
-                    if (FISource.LastWriteTimeUtc > FIDest.LastWriteTimeUtc)        ColorConsoleWrite("(S)", ConsoleColor.Cyan); // Source is newer
-                    else if (FISource.LastWriteTimeUtc < FIDest.LastWriteTimeUtc)   ColorConsoleWrite("(D)", ConsoleColor.Yellow); // Destination file is newer
-                    else                                                            ColorConsoleWrite("(C)", ConsoleColor.Red); // Both files are same but one of them could be corrupted
+                    if (FISource.LastWriteTimeUtc > FIDest.LastWriteTimeUtc)        ColorConsoleWrite(" (S) ", ConsoleColor.Cyan); // Source is newer
+                    else if (FISource.LastWriteTimeUtc < FIDest.LastWriteTimeUtc)   ColorConsoleWrite(" (D) ", ConsoleColor.Yellow); // Destination file is newer
+                    else                                                            ColorConsoleWrite(" (C) ", ConsoleColor.Red); // Both files are same but one of them could be corrupted
 
                     if (!CRSource.MD5.Equals(CRDest.MD5))       ColorConsoleWrite("[MD5] ", ConsoleColor.DarkCyan);     // MD5 checksum comparision failed.
                     if (!CRSource.SHA1.Equals(CRDest.SHA1))     ColorConsoleWrite("[SHA1] ", ConsoleColor.DarkYellow);  // SHA1 checksum comparision failed.
@@ -196,9 +196,18 @@ namespace fccli
                 }
             }
 
+            if (format.Length > 0)
+            {
+                // Cleaning the last status before replacing it with a new one.
+                Console.Write(new string(' ', format.Length));
+                if (format.Length <= Console.WindowWidth) Console.Write("\r");
+                for (int i = 0; i < format.Length / Console.WindowWidth; i++)
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+            }
+
             benchmark.Stop(); // Stopping Stopwatch
 
-            Console.WriteLine($"\n{CommonFiles.Count} files with common names compared successfully in {benchmark.ElapsedMilliseconds/1000} seconds!\n");
+            Console.WriteLine($"\n\n{CommonFiles.Count} files with common names compared successfully in {benchmark.ElapsedMilliseconds/1000} seconds!\n");
 
             benchmark.Reset(); // Resetting Stopwatch
 
@@ -209,13 +218,13 @@ namespace fccli
                 // Printing the Legend after the batch process is completed.
 
                 Console.WriteLine("Legend :");
-                ColorConsoleWrite("\t(S)", ConsoleColor.Cyan);          Console.WriteLine(" : Source file appears to be newer and probably contains the latest changes.");
-                ColorConsoleWrite("\t(D)", ConsoleColor.Yellow);        Console.WriteLine(" : Destination file appears to be newer and probably contains the latest changes.");
-                ColorConsoleWrite("\t(C)", ConsoleColor.Red);           Console.WriteLine(" : One of the files could be corrupted.");
-                ColorConsoleWrite("\t[MD5]", ConsoleColor.DarkCyan);    Console.WriteLine(" : MD5 checksum comparision failed.");
-                ColorConsoleWrite("[SHA1] ", ConsoleColor.DarkYellow);  Console.WriteLine(" : SHA1 checksum comparision failed.");
-                ColorConsoleWrite("[SHA256] ", ConsoleColor.Green);     Console.WriteLine(" : SHA256 checksum comparision failed.");
-                ColorConsoleWrite("[SHA512]", ConsoleColor.Magenta);    Console.WriteLine(" : SHA512 checksum comparision failed.");
+                ColorConsoleWrite("\t(S)     ", ConsoleColor.Cyan);         Console.WriteLine(" : Source file appears to be newer and probably contains the latest changes.");
+                ColorConsoleWrite("\t(D)     ", ConsoleColor.Yellow);       Console.WriteLine(" : Destination file appears to be newer and probably contains the latest changes.");
+                ColorConsoleWrite("\t(C)     ", ConsoleColor.Red);          Console.WriteLine(" : One of the files could be corrupted.");
+                ColorConsoleWrite("\t[MD5]   ", ConsoleColor.DarkCyan);     Console.WriteLine(" : MD5 checksum comparision failed.");
+                ColorConsoleWrite("\t[SHA1]  ", ConsoleColor.DarkYellow);   Console.WriteLine(" : SHA1 checksum comparision failed.");
+                ColorConsoleWrite("\t[SHA256]", ConsoleColor.Green);        Console.WriteLine(" : SHA256 checksum comparision failed.");
+                ColorConsoleWrite("\t[SHA512]", ConsoleColor.Magenta);      Console.WriteLine(" : SHA512 checksum comparision failed.");
             }            
         }
 
